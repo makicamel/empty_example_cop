@@ -1,0 +1,3 @@
+RSpec/EmptyExample:
+  Description: Detect empty examples which don't include any expectations.
+  Enabled: true

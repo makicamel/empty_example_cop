@@ -2,7 +2,7 @@
 
 require_relative './spec_helper'
 
-RSpec.describe EmptyExampleCop::RSpec::EmptyExample do
+RSpec.describe RuboCop::Cop::RSpec::EmptyExample do
   subject(:cop) { described_class.new }
 
   context 'without expectation' do
