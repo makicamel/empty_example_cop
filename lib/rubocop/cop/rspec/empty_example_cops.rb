@@ -4,6 +4,10 @@ module RuboCop
   module Cop
     module RSpec
       class EmptyExample < Base
+        extend AutoCorrector
+
+        include RangeHelp
+
         # Checks if an example does not include any expectations.
         #
         # @example usage
@@ -29,9 +33,9 @@ module RuboCop
         #   end
         MSG = 'Empty example detected.'
 
-        def_node_matcher :it_description?, <<-PATTERN
+        def_node_matcher :it_description, <<-PATTERN
           (block
-            (send nil? :it ...) ...)
+            (send nil? :it $...) ...)
         PATTERN
 
         def_node_matcher :expect?, <<-PATTERN
@@ -47,10 +51,16 @@ module RuboCop
         PATTERN
 
         def on_block(node)
-          return unless it_description?(node)
+          description = it_description(node)
+          return if description.nil?
 
           unless example_present?(node)
-            add_offense(node, message: MSG)
+            add_offense(node, message: MSG) do |corrector|
+              corrector.replace(
+                range_by_whole_lines(node.location.expression),
+                "it #{description.last&.source}"
+              )
+            end
           end
         end
 

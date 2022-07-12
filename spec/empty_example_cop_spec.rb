@@ -12,6 +12,10 @@ RSpec.describe RuboCop::Cop::RSpec::EmptyExample do
         ^^^^^^^^^^^^^^^^^^^ Empty example detected.
         end
       RUBY
+
+      expect_correction(<<~RUBY)
+      it 'has offense'
+      RUBY
     end
   end
 
@@ -22,6 +26,10 @@ RSpec.describe RuboCop::Cop::RSpec::EmptyExample do
         ^^^^^^^^^^^^^^^^^^^ Empty example detected.
           1 + 1
         end
+      RUBY
+
+      expect_correction(<<~RUBY)
+      it 'has offense'
       RUBY
     end
   end
